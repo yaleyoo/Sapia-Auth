@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Post, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { LoginDto } from './modules/user/dtos/LoginDTO';
 
 @Controller()
 export class AppController {

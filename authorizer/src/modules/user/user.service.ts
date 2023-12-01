@@ -1,5 +1,5 @@
 
-import { Model, connect } from 'mongoose';
+import { Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
