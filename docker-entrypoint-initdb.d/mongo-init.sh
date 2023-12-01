@@ -1,11 +1,18 @@
+set -e
+
+echo 
+
+mongosh -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD <<EOF
+use $MONGO_INITDB_DATABASE
+
 db.createUser(
     {
-        user: "mongo",
-        pwd: "mongo",
+        user: '$MONGO_INITDB_ROOT_USERNAME',
+        pwd: '$MONGO_INITDB_ROOT_PASSWORD',
         roles: [
             {
                 role: "readWrite",
-                db: "sapia"
+                db: '$MONGO_INITDB_DATABASE'
             }
         ]
     }
@@ -22,4 +29,5 @@ db.users.insert([
         "last_login": "2023-11-30",
         "status": 1 
     }
-  ]);
+]);
+EOF

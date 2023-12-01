@@ -1,11 +1,14 @@
 
 SHELL := /bin/bash
 
-export DB_HOST ?= localhost
+export DB_HOST ?= mongo_local
 export DB_PORT ?= 27017
 #should provide by centralized credentials manager, such as AWS secret manager, github environment secret etc.
 export DB_USERNAME ?= mongo
 export DB_PASSWORD ?= mongo
+export MONGO_INITDB_DATABASE = sapia
+export TOKEN_EXPIRE=1h
+export TOKEN_SECRET=randomsecret
 
 
 DOCKER_COMPOSE_AVAILABLE := $(shell docker-compose -v 2> /dev/null)
