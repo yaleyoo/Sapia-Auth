@@ -1,0 +1,35 @@
+# compiled output
+/authorizer/dist
+/authorizer/node_modules
+
+# Logs
+/authorizer/logs
+/authorizer/*.log
+/authorizer/npm-debug.log*
+/authorizer/pnpm-debug.log*
+/authorizer/yarn-debug.log*
+/authorizer/yarn-error.log*
+/authorizer/lerna-debug.log*
+
+# OS
+/authorizer/.DS_Store
+
+# Tests
+/authorizer/coverage
+/authorizer/.nyc_output
+
+# IDEs and editors
+/authorizer/.idea
+/authorizer/.project
+/authorizer/.classpath
+/authorizer/.c9/
+/authorizer/*.launch
+/authorizer/.settings/
+/authorizer/*.sublime-workspace
+
+# IDE - VSCode
+/authorizer/.vscode/*
+/authorizer/!.vscode/settings.json
+/authorizer/!.vscode/tasks.json
+/authorizer/!.vscode/launch.json
+/authorizer/!.vscode/extensions.json
