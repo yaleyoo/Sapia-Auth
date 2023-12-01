@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  mongo_local:
+    container_name: mongo_local
+    image: mongo:7.0
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+    volumes:
+      - ./docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo_local:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=sapia
+      
+    networks:
+      - sapia-network
+  
+  # could be dynamodb
+  redis_local:
+    container_name: redis_local
+    image: redis:7.0.0
+    restart: always
+    volumes:
+      - redis_local:/data
+    ports:
+      - '16379:16379'
+    networks:
+      - sapia-network
+
+  # sapia_authorizer:
+  #   container_name: sapia_authorizer
+  #   build:
+  #     context: ./authorizer
+  #   image: sapia_authorizer
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - DB_HOST=${DB_HOST}
+  #     - DB_PORT=${DB_PORT}
+  #   networks:
+  #     - sapia-network
+
+networks:
+  sapia-network:
+    driver: bridge
+
+volumes:
+  redis_local:
+    driver: local
+  mongo_local:
+    driver: local
