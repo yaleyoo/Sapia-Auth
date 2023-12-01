@@ -24,7 +24,7 @@ services:
     volumes:
       - redis_local:/data
     ports:
-      - '16379:16379'
+      - '${REDIS_PORT}:${REDIS_PORT}'
     networks:
       - sapia-network
 
@@ -43,6 +43,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - TOKEN_EXPIRE=${TOKEN_EXPIRE}
       - TOKEN_SECRET=${TOKEN_SECRET}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
     networks:
       - sapia-network
 

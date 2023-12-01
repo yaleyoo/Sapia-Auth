@@ -7,8 +7,10 @@ export DB_PORT ?= 27017
 export DB_USERNAME ?= mongo
 export DB_PASSWORD ?= mongo
 export MONGO_INITDB_DATABASE = sapia
-export TOKEN_EXPIRE=1h
-export TOKEN_SECRET=randomsecret
+export TOKEN_EXPIRE ?= 1h
+export TOKEN_SECRET ?= randomsecret
+export REDIS_HOST ?= redis_local
+export REDIS_PORT ?= 6379
 
 
 DOCKER_COMPOSE_AVAILABLE := $(shell docker-compose -v 2> /dev/null)
