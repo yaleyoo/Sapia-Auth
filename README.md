@@ -32,7 +32,7 @@ You only need to implement one user login REST API. Below are some specific requ
 
 ## How to run?
 - In **Linux** or **MacOS**:
-  Please use makefile as the entry, refer to <a href="#Configs">Design</a>.
+  Please use makefile as the entry, refer to <a href="#Configs">Configs</a>.
 - In **Windows**:
   Please delete the docker-compose.yaml and rename the docker-compose-windows.yaml to docker-compose.yaml, then run command:
   ```
