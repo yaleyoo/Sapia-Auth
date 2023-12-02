@@ -8,8 +8,9 @@
     <li><a href="#Design">Design</a></li>
     <li><a href="#Configs">Configs</a></li>
     <li><a href="#API-response">API response</a></li>
-    <li><a href="#unit-tests">Unit tests</a></li>
-    <li><a href="#e2e-tests">E2E tests</a></li>
+    <li><a href="#unit-testsinclude-service-test-and-controller-test">Unit tests</a></li>
+    <li><a href="#end-to-end-tests">E2E tests</a></li>
+    <li><a href="#Considerations">Considerations</a></li>
   </ol>
 
 ## Introduction
@@ -201,8 +202,9 @@ volumes:
 ## unit-tests(include service test and controller test)
 ![image](https://github.com/yaleyoo/Sapia-Auth/assets/19161443/ff6989f3-9c9c-4a80-b50e-033d2ddc36c8)
 
-## end to end tests
+## end-to-end-tests
 ![image](https://github.com/yaleyoo/Sapia-Auth/assets/19161443/5156ba8e-f470-4d2f-a599-3370cff29835)
 
-
-
+## Considerations
+1. The solution doesn't apply any lock while counting login attempts, which could have a concurrency issue (dirty read/write) when a large amount of login attempts happen simultaneously. But is acceptable in this scenario, if concurrency issue is the case, then a pessimistic lock need to be applied when updating login attempts data. This could be implemented by acquiring a key, which could be a record in redis, piror to each failed login attempt.
+2. Refresh token could be generated for user to exchange for another access token when its expired.
