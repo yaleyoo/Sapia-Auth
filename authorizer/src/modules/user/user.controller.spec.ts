@@ -1,27 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from "./user.service";
+import { UsersController } from './user.controller';
+import { UsersService } from './user.service';
+import { LoginDto } from './dtos/LoginDTO';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User, UserSchema } from './schemas/user.schema';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import * as CryptoJS from 'crypto-js';
-import { LoginDto } from './dtos/LoginDTO';
-import { UserStatus } from '../../enum/UserStatus';
 import { RedisAndMongoMock } from '../../../test/mocks/RedisAndMongoMock';
+import * as CryptoJS from 'crypto-js';
+import { UserStatus } from '../../enum/UserStatus';
+import { HttpStatus } from '@nestjs/common';
 
 
-describe('UsersService', () => {
-    let service: UsersService;
-    let connections: RedisAndMongoMock;
-    let mongod: MongoMemoryServer;
-
-    const dummy_username: string = 'test_user_userservice';
+describe('UsersController', () => {
+    let usersController: UsersController;
+    const dummy_username: string = 'test_user_usercontroller';
     const dummy_password: string = 'test_password'
+    let mongod: MongoMemoryServer;
+    let connections: RedisAndMongoMock;
+
 
     beforeEach(async () => {
         mongod = await MongoMemoryServer.create({});
-
         const app: TestingModule = await Test.createTestingModule({
             imports: [
                 RedisModule.forRoot({
@@ -31,11 +31,13 @@ describe('UsersService', () => {
                 }),
                 MongooseModule.forRoot(mongod.getUri()),
                 MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-            ],
-            providers: [UsersService, RedisAndMongoMock]
+            ], 
+            controllers: [UsersController],
+            providers: [UsersService, RedisAndMongoMock],
         }).compile();
 
-        service = app.get<UsersService>(UsersService);
+
+        usersController = app.get<UsersController>(UsersController);
         connections = app.get<RedisAndMongoMock>(RedisAndMongoMock);
 
         // insert dummy data
@@ -49,37 +51,21 @@ describe('UsersService', () => {
         ])
     });
 
-
-    describe('test Fn attemptFailed', () => {
-        it('attempt failed login once', async () => {
-            let loginDto = new LoginDto();
-            loginDto.username = dummy_username;
-            loginDto.password = dummy_password;
-
-            await service.attemptFailed(loginDto)
-
-            expect(parseInt(await connections.redis.get(dummy_username))).toBe(1)
-
-        })
-    })
-
-    describe('test Fn login', () => {
+    describe('user controller', () => {
         let loginDto = new LoginDto();
         loginDto.username = dummy_username;
         loginDto.password = dummy_password;
 
+        it('success login should return token', async () => {
+            expect(typeof await usersController.login(loginDto)).toBe("string")
+        });
 
-        it('successfully login', async () => {
-            loginDto.password = dummy_password;
-            expect(typeof await service.login(loginDto)).toBe("string")
-        })
-
-        it('attempt failed login 3 times within 5 mins', async () => {
+        it('attempt failed login 3 times to get account locked', async () => {
             loginDto.password = 'random_error_password';
-            // should throw unauthorised error first 2 attempts
-            for (let i = 0; i < 2; i++) {
+            // should throw unauthorised error first 3 attempts
+            for (let i = 0; i < 3; i++) {
                 try {
-                    await service.login(loginDto)
+                    await usersController.login(loginDto)
 
                     // should throw exception, otherwise failed test
                     expect(false).toBe(true)
@@ -92,9 +78,9 @@ describe('UsersService', () => {
             }
 
 
-            // should throw forbidden error 3st attempts
+            // should throw forbidden error 4st attempts
             try {
-                await service.login(loginDto)
+                await usersController.login(loginDto)
 
                 // should throw exception, otherwise failed test
                 expect(false).toBe(true)
@@ -102,11 +88,10 @@ describe('UsersService', () => {
                 expect(e.status).toBe(HttpStatus.FORBIDDEN)
             }
         })
-
-    })
+    });
 
     afterAll(async () => {
         await connections.redis.del(dummy_username)
         await mongod.stop();
     });
-})
+});

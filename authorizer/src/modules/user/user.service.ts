@@ -25,6 +25,7 @@ export class UsersService {
     }
 
 
+    // TODO: access token & refresh token
     async login(loginDto: LoginDto): Promise<string> {
         let user = await this.userModel.findOne({
             username: loginDto.username
@@ -56,7 +57,7 @@ export class UsersService {
         // first faild attempt
         if (attempts == 0) this.redis.set(loginDto.username, 1, 'EX', 300);
         // set attempt = attempt + 1, keep TTL NOTICE: only works for REDIS >= 6.0
-        else if (attempts <= 2) this.redis.set(loginDto.username, attempts+1, 'KEEPTTL')
+        else if (attempts < 2) this.redis.set(loginDto.username, attempts+1, 'KEEPTTL')
         else {
             await this.userModel.findOneAndUpdate({username: loginDto.username}, {status: UserStatus.LOCKED}, {new: true})
             console.log(`Account ${loginDto.username} locked`)
