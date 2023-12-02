@@ -96,7 +96,9 @@ EOF
 
 
 ### Redis v7.0.0 (could be Dynamodb for serverless & cloud-based solution)
-** Redis is used for storing the failed login attempt in 5 minutes using the TTL feature which is only available for Redis version >= 6.0.0) **
+
+**Redis is used for storing the failed login attempt in 5 minutes using the TTL feature which is only available for Redis version >= 6.0.0)**
+
 key-value pair as below, and will expire after TTL. Updating the value should not reset the TTL.
 ```
 username: number of failed attempts [0-3)
@@ -104,7 +106,8 @@ username: number of failed attempts [0-3)
 ![image](https://github.com/yaleyoo/Sapia-Auth/assets/19161443/9e28a646-e960-4cf2-a9e7-c5f92e0f15c1)
 
 ### Nest.js app (API)
-** application should be built in the environment with node version >= 18.0 **
+
+**application should be built in the environment with node version >= 18.0**
 
 ## Configs
 
@@ -121,7 +124,9 @@ Please initiate/stop/clean the containers with the Makefile.
 > **make down** - this command will stop and clean all containers
 
 ### docker-compose.yaml
-**redis and mongodb are persistent in Docker local volumn**
+
+**redis and Mongodb are persistent in Docker local volume**
+
 ```
 version: '3'
 
@@ -183,6 +188,7 @@ volumes:
   mongo_local:
     driver: local
 ```
+
 ## API response
 ### When successful login, an access token will be responded (the token is validated for 1 hour by default
 ![image](https://github.com/yaleyoo/Sapia-Auth/assets/19161443/83eac623-77ad-4125-8a58-e7e2a56e2817)
