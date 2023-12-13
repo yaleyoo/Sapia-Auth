@@ -6,7 +6,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User, UserSchema } from './schemas/user.schema';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import * as CryptoJS from 'crypto-js';
-import { LoginDto } from './dtos/LoginDTO';
+import { LoginDto } from '../auth/dtos/LoginDTO';
 import { UserStatus } from '../../enum/UserStatus';
 import { RedisAndMongoMock } from '../../../test/mocks/RedisAndMongoMock';
 

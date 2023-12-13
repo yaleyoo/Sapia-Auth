@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/user/user.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { AuthModule } from './modules/auth/auth.module';
+import { User } from './modules/user/schemas/user.schema';
 
 @Module({
   imports: [
@@ -11,11 +13,12 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 
     // MongooseModule.forRoot(`mongodb://mongo:mongo@mongo_local:27017/sapia?authMechanism=DEFAULT`), 
     UsersModule,
+    AuthModule,
     RedisModule.forRoot({
       config: { 
         url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
       },
-    }),
+    })
   ],
   controllers: [AppController],
   providers: [AppService],

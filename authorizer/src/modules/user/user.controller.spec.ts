@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './user.controller';
 import { UsersService } from './user.service';
-import { LoginDto } from './dtos/LoginDTO';
+import { LoginDto } from '../auth/dtos/LoginDTO';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RedisModule } from '@nestjs-modules/ioredis';
